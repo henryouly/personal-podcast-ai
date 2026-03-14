@@ -151,3 +151,20 @@
 - Implemented high-quality `en-US-Neural2-D` voice as default.
 - Integrated Vercel Blob for persistent storage of `.mp3` assets.
 - Confirmed BYOK support by passing the API key to the `TextToSpeechClient` constructor.
+
+---
+
+## [2026-03-14] Starting Phase 4.1 & 4.2
+**Goal**: Orchestrate the generation pipeline and implement the RSS feed endpoint.
+
+### Status Update
+- [x] 1. Implement Pipeline Service (src/services/pipeline.ts)
+- [x] 2. Add `episodes.trigger` tRPC procedure
+- [x] 3. Install xmlbuilder2
+- [x] 4. Implement RSS XML Endpoint (GET /api/rss/:token)
+- [x] 5. Verification (Integration Tests verified RSS serving and 401 handling)
+
+### Notes
+- Orchestrated the full ingestion-to-audio flow in `pipelineService`.
+- Added `rssToken` to the `users` table to allow secure, non-authenticated access by podcast players.
+- Verified that `trigger` manually starts the background processing.

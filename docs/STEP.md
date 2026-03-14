@@ -318,9 +318,37 @@ Create `src/services/audio.ts` to:
 - Upload the resulting audio buffer to Vercel Blob storage.
 - Update the `episodes` table with the `audioUrl` and `status='done'`.
 
+---
+
+# Phase 4: RSS & Resilience
+
+This phase involves orchestrating the generation pipeline, implementing retry logic, and serving the final podcast XML feed.
+
+## Phase 4.1: Pipeline Orchestration & Resilience
+
+### 1. Implement Pipeline Service
+Create `src/services/pipeline.ts` to orchestrate the full flow:
+- `processSource(sourceId)`: Fetches news -> Generates script -> Synthesizes audio.
+- Updates the `episodes` table at each stage (pending -> done).
+- Implements retry logic: If any stage fails, increment `retryCount` and log `lastError`.
+
+### 2. Implement Background Trigger
+Add a tRPC procedure `episodes.trigger` to manually start the process for a specific source.
+
+## Phase 4.2: XML Generation (The Podcast Feed)
+
+### 1. Install XML Builder
+```bash
+pnpm add xmlbuilder2
+```
+
+### 2. Implement RSS Feed Router
+Create `src/server/routers/rss.ts` (or a dedicated Hono route) to serve the XML feed.
+- Endpoint: `GET /api/rss/:token`
+- Logic:
+    - Validate the `:token` (associated with a user).
+    - Fetch all `done` episodes for that user.
+    - Build a standard iTunes-compatible XML feed using `xmlbuilder2`.
+
 ## Dependencies Breakdown
-- **rss-parser**: A lightweight RSS parser for Node.js.
-- **cheerio**: Fast, flexible HTML parsing.
-- **@google/generative-ai**: Google's official Gemini AI client.
-- **@google-cloud/text-to-speech**: Google's official TTS client.
-- **@vercel/blob**: Client for Vercel's edge-optimized object storage.
+- **xmlbuilder2**: A fast and powerful XML builder for Node.js.

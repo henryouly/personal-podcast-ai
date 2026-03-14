@@ -9,6 +9,7 @@ export const users = sqliteTable("users", {
   geminiKey: text("gemini_key"),
   openaiKey: text("openai_key"),
   elevenLabsKey: text("elevenlabs_key"),
+  rssToken: text("rss_token").unique(),
 });
 
 // News Sources

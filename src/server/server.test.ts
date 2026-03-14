@@ -29,4 +29,37 @@ describe('Hono + tRPC Integration', () => {
     const res = await app.request('/api/trpc/health');
     expect(res.status).toBe(200);
   });
+
+  it('should return 401 for invalid RSS token', async () => {
+    const res = await app.request('/api/rss/invalid-token');
+    expect(res.status).toBe(401);
+  });
+
+  it('should return 200 and XML for valid RSS token', async () => {
+    const { db } = await import('../db');
+    const { users } = await import('../db/schema');
+    const { eq } = await import('drizzle-orm');
+    
+    const testToken = 'test-rss-token-123';
+    const testUser = {
+      id: 'rss-user-id',
+      email: 'rss@example.com',
+      rssToken: testToken
+    };
+
+    // Setup
+    await db.delete(users).where(eq(users.id, testUser.id));
+    await db.insert(users).values(testUser);
+
+    const res = await app.request(`/api/rss/${testToken}`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('application/xml');
+    
+    const text = await res.text();
+    expect(text).toContain('<rss');
+    expect(text).toContain('PAP');
+
+    // Cleanup
+    await db.delete(users).where(eq(users.id, testUser.id));
+  });
 });
