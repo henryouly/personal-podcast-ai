@@ -350,5 +350,44 @@ Create `src/server/routers/rss.ts` (or a dedicated Hono route) to serve the XML 
     - Fetch all `done` episodes for that user.
     - Build a standard iTunes-compatible XML feed using `xmlbuilder2`.
 
+---
+
+# Phase 5: Dashboard & UX
+
+This phase involves building the frontend components to manage news sources, monitor generation progress, and configure user API keys.
+
+## Phase 5.1: tRPC Client Setup & Hooks
+
+### 1. Initialize tRPC Client
+Create `src/lib/trpc.ts` to initialize the tRPC client and React Query hooks.
+
+### 2. Configure Providers
+Update `main.tsx` to wrap the application in `QueryClientProvider` and tRPC's `Provider`.
+
+## Phase 5.2: Source Manager UI
+
+### 1. Build Source List & Form
+Create `src/components/dashboard/SourceManager.tsx`:
+- List existing news sources.
+- Form to add new RSS/HTML sources.
+- "Delete" functionality.
+
+## Phase 5.3: Episode Feed & Monitoring
+
+### 1. Build Episode Dashboard
+Create `src/components/dashboard/EpisodeFeed.tsx`:
+- Display a list of episodes with their current status (pending, done, failed).
+- "Trigger" button to start a manual update for a source.
+- "Retry" button for failed episodes.
+- Simple audio player for "done" episodes.
+
+## Phase 5.4: Settings & Keys
+
+### 1. Build Settings Page
+Create `src/components/dashboard/Settings.tsx`:
+- Form to update Gemini and Google Cloud API keys.
+- Display and "Copy" button for the personal RSS feed URL.
+
 ## Dependencies Breakdown
-- **xmlbuilder2**: A fast and powerful XML builder for Node.js.
+- **@trpc/react-query**: React hooks for tRPC.
+- **@tanstack/react-query**: Powerful asynchronous state management.

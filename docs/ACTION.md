@@ -168,3 +168,20 @@
 - Orchestrated the full ingestion-to-audio flow in `pipelineService`.
 - Added `rssToken` to the `users` table to allow secure, non-authenticated access by podcast players.
 - Verified that `trigger` manually starts the background processing.
+
+---
+
+## [2026-03-14] Starting Phase 5
+**Goal**: Build the frontend dashboard for source management, episode monitoring, and settings.
+
+### Status Update
+- [x] 1. Initialize tRPC Client & Providers (src/lib/trpc.ts, src/main.tsx)
+- [x] 2. Build Source Manager UI (src/components/dashboard/SourceManager.tsx)
+- [x] 3. Build Episode Feed & Monitoring (src/components/dashboard/EpisodeFeed.tsx)
+- [x] 4. Build Settings & Keys UI (src/components/dashboard/Settings.tsx)
+- [x] 5. Verification (Successful build and UI structure implemented)
+
+### Notes
+- Integrated a comprehensive `DashboardLayout` with sidebar navigation.
+- Implemented real-time polling in `EpisodeFeed` for pending generations.
+- Fixed several TypeScript errors related to unused imports and nullable database fields.

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { router, protectedProcedure } from "../trpc";
-import { episodes, sources } from "../../db/schema";
+import { episodes, sources, users } from "../../db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { pipelineService } from "../../services/pipeline";
 
@@ -39,7 +39,7 @@ export const episodesRouter = router({
         .where(and(eq(episodes.id, input.id), eq(sources.userId, ctx.user.id)))
         .limit(1);
 
-      if (episode.length === 0) {
+      if (episode.length === 0 || !episode[0].sourceId) {
         throw new Error("Episode not found or unauthorized");
       }
 
@@ -54,19 +54,17 @@ export const episodesRouter = router({
         .where(eq(episodes.id, input.id));
 
       // Re-trigger pipeline
-      // Fetch source and user again inside runPipeline via pipelineService would be better
-      // But for simplicity we'll just re-trigger the source processing if needed, 
-      // or just re-run the pipeline logic.
-      
       const source = await ctx.db.query.sources.findFirst({
-        where: eq(sources.id, episode[0].sourceId)
+        where: eq(sources.id, episode[0].sourceId as number)
       });
       
       const user = await ctx.db.query.users.findFirst({
         where: eq(users.id, ctx.user.id)
       });
 
-      pipelineService.runPipeline(input.id, source, user).catch(console.error);
+      if (source && user) {
+        pipelineService.runPipeline(input.id, source, user).catch(console.error);
+      }
 
       return { success: true };
     }),
