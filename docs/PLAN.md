@@ -18,9 +18,9 @@ This document outlines the step-by-step roadmap for building the PAP platform, a
 - **Object Storage**: [Vercel Blob](https://vercel.com/docs/storage/vercel-blob) (for audio assets)
 
 ### AI & Processing
-- **LLMs**: Gemini 1.5 Pro / OpenAI GPT-4o (User-provided keys)
-- **TTS**: ElevenLabs (User-provided keys)
-- **Scraping**: RSS Parser + Fetch API
+- **LLMs**: gemini-3.1-flash-lite-preview (User-provided keys)
+- **TTS**: Google Cloud Text-to-Speech (User-provided keys)
+- **Scraping**: RSS Parser + Cheerio
 
 ---
 
@@ -43,12 +43,12 @@ This document outlines the step-by-step roadmap for building the PAP platform, a
 - **2.4. Episodes Router**: Status tracking and manual retry logic.
 
 ### Phase 3: The Generation Pipeline
-- **3.1. Ingestion Engine**: Service to poll RSS feeds and extract content.
+- **3.1. Ingestion Engine**: Service to poll RSS feeds and extract content using RSS Parser + Cheerio.
 - **3.2. Script Generation**: 
-    - Create a wrapper for Gemini/OpenAI that uses the `user_id`'s stored keys.
+    - Create a wrapper for Gemini that uses the `user_id`'s stored keys.
     - Implement prompt templates for podcast-style narration.
 - **3.3. Audio Synthesis**: 
-    - Integrate ElevenLabs TTS.
+    - Integrate Google Cloud Text-to-Speech.
     - Implement Vercel Blob upload logic and store URLs in the `episodes` table.
 
 ### Phase 4: RSS & Resilience

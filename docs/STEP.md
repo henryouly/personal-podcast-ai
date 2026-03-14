@@ -269,3 +269,58 @@ Create `src/server/routers/episodes.ts` for listing generated content and manual
 - **@trpc/server**: Typesafe API server implementation.
 - **@trpc/react-query**: React hooks for tRPC via TanStack Query.
 - **zod**: Schema validation for API inputs.
+
+---
+
+# Phase 3: The Generation Pipeline
+
+This phase involves building the core logic for fetching news, generating podcast scripts using AI, and synthesizing audio.
+
+## Phase 3.1: Ingestion Engine
+
+### 1. Install Scraping Dependencies
+Install the required packages for parsing RSS feeds and scraping HTML.
+```bash
+pnpm add rss-parser cheerio
+```
+
+### 2. Implement Ingestion Service
+Create `src/services/ingestion.ts` to handle:
+- Fetching and parsing RSS feeds.
+- Basic HTML scraping for non-RSS sources.
+- Normalizing content into a common format (title, summary, full text).
+
+## Phase 3.2: AI Script Generation (Gemini BYOK)
+
+### 1. Install Google Generative AI SDK
+```bash
+pnpm add @google/generative-ai
+```
+
+### 2. Implement Gemini Service
+Create `src/services/ai.ts` to provide an interface for generating scripts.
+- Use `GoogleGenerativeAI` with the user's stored key.
+- Pass context (list of news articles) to the model `gemini-3.1-flash-lite-preview`.
+
+### 3. Define Prompt Templates
+Create prompts that instruct Gemini to transform news articles into a natural, engaging podcast script for a personal narrator.
+
+## Phase 3.3: TTS & Asset Management (Google Cloud TTS)
+
+### 1. Install Google Cloud TTS & Blob SDKs
+```bash
+pnpm add @google-cloud/text-to-speech @vercel/blob
+```
+
+### 2. Implement Audio Synthesis
+Create `src/services/audio.ts` to:
+- Call Google Cloud TTS API using the user's provided credentials.
+- Upload the resulting audio buffer to Vercel Blob storage.
+- Update the `episodes` table with the `audioUrl` and `status='done'`.
+
+## Dependencies Breakdown
+- **rss-parser**: A lightweight RSS parser for Node.js.
+- **cheerio**: Fast, flexible HTML parsing.
+- **@google/generative-ai**: Google's official Gemini AI client.
+- **@google-cloud/text-to-speech**: Google's official TTS client.
+- **@vercel/blob**: Client for Vercel's edge-optimized object storage.

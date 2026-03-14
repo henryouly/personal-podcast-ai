@@ -106,3 +106,48 @@
 ### Notes
 - Sources and Episodes are filtered by `userId` to ensure data isolation.
 - Implemented `retry` procedure to reset episode status to `pending`.
+
+---
+
+## [2026-03-14] Starting Phase 3.1
+**Goal**: Build the ingestion service to fetch and normalize content from news sources.
+
+### Status Update
+- [x] 1. Install Scraping Dependencies (rss-parser, cheerio)
+- [x] 2. Implement Ingestion Service (src/services/ingestion.ts)
+- [x] 3. Verification (Unit Tests passing with mocked Parser)
+
+### Notes
+- Implemented `NormalizedArticle` interface for consistent data structure.
+- Included heuristics for HTML scraping as a fallback/alternative to RSS.
+- Configured Vitest to correctly mock the `rss-parser` class constructor.
+
+---
+
+## [2026-03-14] Starting Phase 3.2
+**Goal**: Integrate gemini-3.1-flash-lite-preview to generate podcast scripts from news content.
+
+### Status Update
+- [x] 1. Install Google Generative AI SDK
+- [x] 2. Implement Gemini Service (src/services/ai.ts)
+- [x] 3. Define Podcast Prompt Template
+- [x] 4. Verification (Unit Test with mocked Gemini response)
+
+### Notes
+- Standardized on `gemini-3.1-flash-lite-preview` per latest requirements.
+- Completed unit tests for AI script generation.
+
+---
+
+## [2026-03-14] Starting Phase 3.3
+**Goal**: Integrate Google Cloud TTS and Vercel Blob storage for audio synthesis and management.
+
+### Status Update
+- [x] 1. Install Google Cloud TTS & Vercel Blob SDKs
+- [x] 2. Implement Audio Service (src/services/audio.ts)
+- [x] 3. Verification (Unit Tests verified synthesis and upload)
+
+### Notes
+- Implemented high-quality `en-US-Neural2-D` voice as default.
+- Integrated Vercel Blob for persistent storage of `.mp3` assets.
+- Confirmed BYOK support by passing the API key to the `TextToSpeechClient` constructor.
