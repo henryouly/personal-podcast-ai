@@ -64,3 +64,45 @@
 - Successfully upgraded to Vite 7.3.1 and Vitest 4.0.18 using `@vitejs/plugin-react@5.1.4`.
 - Integrated `@tailwindcss/vite@4.2.1` for native Tailwind v4 support in Vite.
 - All tests passing with `happy-dom` and current Node.js 22.11.0.
+
+---
+
+## [2026-03-14] Starting Phase 2.1
+**Goal**: Set up the tRPC server with Hono and define the core API architecture.
+
+### Status Update
+- [x] 1. Install tRPC & Hono Dependencies (hono, @trpc/server, zod, etc.)
+- [x] 2. Define tRPC Context (src/server/context.ts - includes DB & Auth)
+- [x] 3. Initialize tRPC Server (src/server/trpc.ts - public/protected procedures)
+- [x] 4. Create Root Router (src/server/routers/_app.ts)
+- [x] 5. Setup Hono Server with Vite (src/server/index.ts & vite.config.ts)
+- [x] 6. Verification (Successful build and typesafe backend scaffolding)
+
+### Notes
+- Integrated `better-auth` handler and tRPC middleware into a single Hono instance.
+- Configured `@hono/vite-dev-server` to proxy `/api/*` requests to the Hono entry point.
+
+---
+
+## [2026-03-14] Starting Phase 2.2
+**Goal**: Implement the User router for BYOK (Bring Your Own Key) management.
+
+### Status Update
+- [x] 1. Implement User Router (src/server/routers/user.ts)
+- [x] 2. Integrate User Router into Root Router (src/server/routers/_app.ts)
+- [x] 3. Verification (Successfully tested updateKeys and getKeyStatus procedures)
+
+---
+
+## [2026-03-14] Starting Phase 2.3
+**Goal**: Implement the Sources and Episodes routers for managing news feeds and generated content.
+
+### Status Update
+- [x] 1. Implement Sources Router (src/server/routers/sources.ts - List, Add, Delete)
+- [x] 2. Implement Episodes Router (src/server/routers/episodes.ts - List, Retry)
+- [x] 3. Integrate Routers into Root Router (src/server/routers/_app.ts)
+- [x] 4. Verification (Unit Tests verified CRUD and authorization)
+
+### Notes
+- Sources and Episodes are filtered by `userId` to ensure data isolation.
+- Implemented `retry` procedure to reset episode status to `pending`.

@@ -213,5 +213,59 @@ pnpm vitest run
 
 ## Dependencies Breakdown
 - **vitest**: A native-Vite test runner.
-- **jsdom**: A browser environment for Node.js (for UI testing).
+- **jsdom / happy-dom**: Browser environments for Node.js (for UI testing).
 - **@testing-library/react**: Utilities for testing React components.
+
+---
+
+# Phase 2: Backend Architecture (tRPC)
+
+This phase involves setting up the typesafe API layer using tRPC and Hono, integrating authentication, and building the core routers.
+
+## Phase 2.1: tRPC Server Setup
+
+### 1. Install tRPC & Hono Dependencies
+Install the core tRPC, Hono, and React Query dependencies.
+```bash
+pnpm add hono @hono/vite-dev-server @trpc/server @trpc/client @trpc/react-query @tanstack/react-query zod
+```
+
+### 2. Define tRPC Context
+Create `src/server/context.ts` to manage the tRPC context, including the database instance and authenticated user session.
+
+### 3. Initialize tRPC Server
+Create `src/server/trpc.ts` to initialize the tRPC instance and define base procedures (public vs. protected).
+
+### 4. Create Root Router
+Create `src/server/routers/_app.ts` as the primary entry point for all sub-routers.
+
+### 5. Setup Hono Server with Vite
+Create `src/server/index.ts` to host the tRPC middleware using Hono and configure the Vite dev server to handle API requests.
+
+---
+
+## Phase 2.2: User Router (BYOK)
+
+### 1. Implement User Router
+Create `src/server/routers/user.ts` with procedures:
+- `updateKeys`: Update Gemini/OpenAI/ElevenLabs keys.
+- `getKeyStatus`: Check which keys are configured.
+
+### 2. Integration
+Add the user router to the root router in `_app.ts`.
+
+---
+
+## Phase 2.3: Sources & Episodes Routers
+
+### 1. Implement Sources Router
+Create `src/server/routers/sources.ts` for CRUD operations on RSS/HTML feeds.
+
+### 2. Implement Episodes Router
+Create `src/server/routers/episodes.ts` for listing generated content and manual retries.
+
+## Dependencies Breakdown
+- **hono**: Lightweight web framework for the backend.
+- **@trpc/server**: Typesafe API server implementation.
+- **@trpc/react-query**: React hooks for tRPC via TanStack Query.
+- **zod**: Schema validation for API inputs.
