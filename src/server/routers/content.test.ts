@@ -5,10 +5,10 @@ import { users, sources, episodes } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 
 describe('Sources & Episodes Routers', () => {
-  const testUserId = 'test-user-content';
+  const testUserId = `test-user-${Date.now()}`;
   const testUser = {
     id: testUserId,
-    email: 'content@example.com',
+    email: `${testUserId}@example.com`,
     name: 'Content Test User',
     emailVerified: true,
     createdAt: new Date(),
@@ -17,8 +17,6 @@ describe('Sources & Episodes Routers', () => {
 
   beforeEach(async () => {
     // Basic cleanup
-    await db.delete(episodes);
-    await db.delete(sources);
     await db.delete(users).where(eq(users.id, testUserId));
     await db.insert(users).values(testUser);
   });

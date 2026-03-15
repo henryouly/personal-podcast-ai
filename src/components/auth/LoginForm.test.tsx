@@ -1,10 +1,15 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { LoginForm } from './LoginForm';
+import { BrowserRouter } from 'react-router-dom';
+
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(ui, { wrapper: BrowserRouter });
+};
 
 describe('LoginForm', () => {
   it('renders login form correctly', () => {
-    render(<LoginForm />);
+    renderWithRouter(<LoginForm />);
     
     expect(screen.getByText(/Welcome Back/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/you@example.com/i)).toBeInTheDocument();
@@ -13,7 +18,7 @@ describe('LoginForm', () => {
   });
 
   it('updates input values correctly', () => {
-    render(<LoginForm />);
+    renderWithRouter(<LoginForm />);
     
     const emailInput = screen.getByPlaceholderText(/you@example.com/i) as HTMLInputElement;
     const passwordInput = screen.getByPlaceholderText(/••••••••/i) as HTMLInputElement;

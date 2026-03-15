@@ -5,24 +5,22 @@ import { eq } from 'drizzle-orm';
 
 describe('Database Integration', () => {
   it('should be able to insert and query a user', async () => {
+    const testUserId = `test-user-${Date.now()}`;
     const testUser = {
-      id: 'test-user-id',
-      email: 'test@example.com',
+      id: testUserId,
+      email: `${testUserId}@example.com`,
       name: 'Test User',
       emailVerified: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
-    // Cleanup first
-    await db.delete(users).where(eq(users.id, testUser.id));
-
     // Insert
     await db.insert(users).values(testUser);
 
     // Query
     const result = await db.query.users.findFirst({
-      where: eq(users.id, testUser.id),
+      where: eq(users.id, testUserId),
     });
 
     expect(result).toBeDefined();
@@ -30,6 +28,6 @@ describe('Database Integration', () => {
     expect(result?.name).toBe(testUser.name);
 
     // Cleanup
-    await db.delete(users).where(eq(users.id, testUser.id));
+    await db.delete(users).where(eq(users.id, testUserId));
   });
 });

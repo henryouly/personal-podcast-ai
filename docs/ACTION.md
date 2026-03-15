@@ -185,3 +185,5 @@
 - Integrated a comprehensive `DashboardLayout` with sidebar navigation.
 - Implemented real-time polling in `EpisodeFeed` for pending generations.
 - Fixed several TypeScript errors related to unused imports and nullable database fields.
+- Resolved `SQLITE_BUSY` test failures by disabling `fileParallelism` in Vitest.
+- All 16 tests across 8 files are passing.
