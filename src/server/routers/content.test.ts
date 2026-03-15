@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { appRouter } from "./_app";
 import { db } from "../../db";
-import { users, episodes, type User } from "../../db/schema";
+import { users, episodes, type User, type Session } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 describe("Sources & Episodes Routers", () => {
@@ -25,7 +25,7 @@ describe("Sources & Episodes Routers", () => {
     const caller = appRouter.createCaller({
       db,
       user: testUser as unknown as User,
-      session: {} as unknown, // Session type is complex from BetterAuth, using unknown here for tests
+      session: {} as unknown as Session,
     });
 
     // Add
@@ -52,7 +52,7 @@ describe("Sources & Episodes Routers", () => {
     const caller = appRouter.createCaller({
       db,
       user: testUser as unknown as User,
-      session: {} as unknown,
+      session: {} as unknown as Session,
     });
 
     // Need a source first for foreign key

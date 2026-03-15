@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { appRouter } from "./_app";
 import { db } from "../../db";
-import { users, type User } from "../../db/schema";
+import { users, type User, type Session } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 describe("User Router", () => {
@@ -38,7 +38,7 @@ describe("User Router", () => {
     const caller = appRouter.createCaller({
       db,
       user: testUser as unknown as User,
-      session: {} as unknown,
+      session: {} as unknown as Session,
     });
 
     const updateResult = await caller.user.updateKeys({

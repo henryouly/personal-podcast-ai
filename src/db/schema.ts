@@ -84,5 +84,6 @@ export const episodes = pgTable("episodes", {
 });
 
 export type User = typeof users.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
 export type Source = typeof sources.$inferSelect;
 export type Episode = typeof episodes.$inferSelect;
