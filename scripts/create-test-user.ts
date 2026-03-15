@@ -12,7 +12,7 @@ async function main() {
 
   try {
     // Use BetterAuth to create the user (this handles password hashing and internal tables)
-    const user = await auth.api.signUpEmail({
+    await auth.api.signUpEmail({
       body: {
         email,
         password,

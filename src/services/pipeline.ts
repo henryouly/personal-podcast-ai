@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { episodes, sources, users } from "../db/schema";
+import { episodes, sources, users, type User, type Source } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { ingestionService } from "./ingestion";
 import { aiService } from "./ai";
@@ -50,21 +50,24 @@ export const pipelineService = {
     return episode;
   },
 
-  async runPipeline(episodeId: number, source: any, user: any) {
+  async runPipeline(episodeId: number, source: Source, user: User) {
     try {
       // 1. Ingest
       const articles = await ingestionService.fetchRSS(source.url);
       if (articles.length === 0) throw new Error("No articles found in feed");
 
       // 2. AI Script
-      const script = await aiService.generatePodcastScript(user.geminiKey, articles.slice(0, 5));
+      const script = await aiService.generatePodcastScript(
+        user.geminiKey as string,
+        articles.slice(0, 5)
+      );
 
       await db.update(episodes).set({ script }).where(eq(episodes.id, episodeId));
 
       // 3. Audio Synthesis
       // Using user.elevenLabsKey as the placeholder for Google Cloud API Key per user's earlier schema
       const { audioUrl, storageKey } = await audioService.synthesizeAndUpload(
-        user.elevenLabsKey,
+        user.elevenLabsKey as string,
         script,
         episodeId
       );

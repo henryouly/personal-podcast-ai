@@ -6,7 +6,7 @@ import { trpc } from "./lib/trpc";
 import "./index.css";
 import App from "./App.tsx";
 
-function Root() {
+export function Root() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({

@@ -82,3 +82,7 @@ export const episodes = sqliteTable("episodes", {
   lastError: text("last_error"),
   createdAt: integer("created_at", { mode: "timestamp" }),
 });
+
+export type User = typeof users.$inferSelect;
+export type Source = typeof sources.$inferSelect;
+export type Episode = typeof episodes.$inferSelect;

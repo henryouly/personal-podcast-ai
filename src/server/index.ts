@@ -19,6 +19,7 @@ app.get("/api/rss/:token", async (c) => {
       "Content-Type": "application/xml",
     });
   } catch (error) {
+    console.error("RSS Feed Generation Error:", error);
     return c.text("Unauthorized or Invalid Token", 401);
   }
 });

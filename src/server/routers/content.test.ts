@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { appRouter } from "./_app";
 import { db } from "../../db";
-import { users, sources, episodes } from "../../db/schema";
+import { users, episodes, type User } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 describe("Sources & Episodes Routers", () => {
@@ -24,8 +24,8 @@ describe("Sources & Episodes Routers", () => {
   it("should manage sources CRUD", async () => {
     const caller = appRouter.createCaller({
       db,
-      user: testUser as any,
-      session: {} as any,
+      user: testUser as unknown as User,
+      session: {} as unknown, // Session type is complex from BetterAuth, using unknown here for tests
     });
 
     // Add
@@ -51,8 +51,8 @@ describe("Sources & Episodes Routers", () => {
   it("should list and retry episodes", async () => {
     const caller = appRouter.createCaller({
       db,
-      user: testUser as any,
-      session: {} as any,
+      user: testUser as unknown as User,
+      session: {} as unknown,
     });
 
     // Need a source first for foreign key
