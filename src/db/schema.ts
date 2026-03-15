@@ -1,15 +1,15 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, timestamp, boolean, serial } from "drizzle-orm/pg-core";
 
 // --- BetterAuth Standard Tables ---
 
-export const users = sqliteTable("users", {
+export const users = pgTable("users", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").unique().notNull(),
-  emailVerified: integer("email_verified", { mode: "boolean" }).notNull(),
+  emailVerified: boolean("email_verified").notNull(),
   image: text("image"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull(),
 
   // --- Custom PAP Fields (BYOK + RSS) ---
   geminiKey: text("gemini_key"),
@@ -18,12 +18,12 @@ export const users = sqliteTable("users", {
   rssToken: text("rss_token").unique(),
 });
 
-export const sessions = sqliteTable("sessions", {
+export const sessions = pgTable("sessions", {
   id: text("id").primaryKey(),
-  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
   token: text("token").unique().notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
   userId: text("user_id")
@@ -31,7 +31,7 @@ export const sessions = sqliteTable("sessions", {
     .references(() => users.id),
 });
 
-export const accounts = sqliteTable("accounts", {
+export const accounts = pgTable("accounts", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
@@ -41,37 +41,37 @@ export const accounts = sqliteTable("accounts", {
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   idToken: text("id_token"),
-  accessTokenExpiresAt: integer("access_token_expires_at", { mode: "timestamp" }),
-  refreshTokenExpiresAt: integer("refresh_token_expires_at", { mode: "timestamp" }),
+  accessTokenExpiresAt: timestamp("access_token_expires_at", { mode: "date" }),
+  refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { mode: "date" }),
   scope: text("scope"),
   password: text("password"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull(),
 });
 
-export const verifications = sqliteTable("verifications", {
+export const verifications = pgTable("verifications", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
-  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }),
-  updatedAt: integer("updated_at", { mode: "timestamp" }),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }),
+  updatedAt: timestamp("updated_at", { mode: "date" }),
 });
 
 // --- PAP Application Tables ---
 
-export const sources = sqliteTable("sources", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const sources = pgTable("sources", {
+  id: serial("id").primaryKey(),
   userId: text("user_id").references(() => users.id),
   name: text("name").notNull(),
   url: text("url").notNull(),
   type: text("type").notNull(), // 'rss' | 'html'
   frequency: text("frequency").default("daily"),
-  lastCheckedAt: integer("last_checked_at", { mode: "timestamp" }),
+  lastCheckedAt: timestamp("last_checked_at", { mode: "date" }),
 });
 
-export const episodes = sqliteTable("episodes", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const episodes = pgTable("episodes", {
+  id: serial("id").primaryKey(),
   sourceId: integer("source_id").references(() => sources.id),
   title: text("title").notNull(),
   script: text("script"),
@@ -80,7 +80,7 @@ export const episodes = sqliteTable("episodes", {
   status: text("status").default("pending"),
   retryCount: integer("retry_count").default(0),
   lastError: text("last_error"),
-  createdAt: integer("created_at", { mode: "timestamp" }),
+  createdAt: timestamp("created_at", { mode: "date" }),
 });
 
 export type User = typeof users.$inferSelect;
