@@ -2,6 +2,7 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import devServer from '@hono/vite-dev-server'
+import 'dotenv/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
