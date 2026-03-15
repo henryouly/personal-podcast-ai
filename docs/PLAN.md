@@ -71,6 +71,13 @@ This document outlines the step-by-step roadmap for building the PAP platform, a
 - **5.2. Episode Feed**: A real-time dashboard showing generation progress and audio playback.
 - **5.3. Settings & Keys**: Secure UI for managing API keys and preferences.
 
+### Phase 6: Post-Launch Polish & Tooling (Completed)
+
+- **6.1. Environment Validation**: Ensure `.env` includes `BLOB_READ_WRITE_TOKEN` and loads performantly via `vite.config.ts`.
+- **6.2. Vercel Blob Access**: Ensure created stores are Public so RSS XML audio enclosures stream correctly.
+- **6.3. Formatting & Linting**: Establish Prettier + ESLint strictness across the codebase.
+- **6.4. UI Polish**: Add gradient designs and modern typography to the landing page (`App.tsx`).
+
 ---
 
 ## 3. Development Standards

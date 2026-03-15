@@ -15,6 +15,16 @@ See the [Project Documentation](CORE_REFERENCE.md) for full technical implementa
 - API/tRPC Router architecture
 - RSS Generation flow
 
+## Environment Setup
+
+To run this application locally, you must create a `.env` file based on `.env.example`.
+
+### Required Variables:
+- **`DATABASE_URL`**: E.g., `file:local.db` or a Turso remote URL.
+- **`DATABASE_AUTH_TOKEN`**: Required if using a remote Turso database.
+- **`BLOB_READ_WRITE_TOKEN`**: Required to upload podcast `.mp3` files to Vercel Blob. 
+  > **Crucial Note:** When creating the Vercel Blob store, you **must** configure it with **Public** access. If it is Private, podcast players will be denied access to stream the audio files from your generated RSS feed.
+
 ## Development Lifecycle
 
 1. **[Prototype Phase]**: Configure Vite + tRPC + Drizzle.

@@ -221,3 +221,25 @@
 - Fixed several TypeScript errors related to unused imports and nullable database fields.
 - Resolved `SQLITE_BUSY` test failures by disabling `fileParallelism` in Vitest.
 - All 16 tests across 8 files are passing.
+
+---
+
+## [2026-03-15] Starting Phase 6: Polish, Tooling & Bug Fixes
+
+**Goal**: Refine the UI, fix environment and build issues, and enforce codebase formatting.
+
+### Status Update
+
+- [x] 1. Landing Page Redesign (Added modern gradients and refined typography in `App.tsx`)
+- [x] 2. Tailwind v4 Fix (Updated `src/index.css` to use `@import "tailwindcss";`)
+- [x] 3. Vercel Blob Environment Fix (Added `BLOB_READ_WRITE_TOKEN` to `.env.example` and `.env`)
+- [x] 4. Dev Server Performance Fix (Moved `dotenv/config` from `server/index.ts` to `vite.config.ts` to prevent HMR slowdowns)
+- [x] 5. Vercel Blob Access Rights (Confirmed public access is required for RSS feeds to work with podcast clients)
+- [x] 6. Settings UI Fix (Updated `getKeyStatus` API to return `rssToken` and display the actual feed URL in the dashboard)
+- [x] 7. Code Formatter Setup (Installed Prettier and `eslint-config-prettier`, created `.prettierrc` and `.prettierignore`)
+- [x] 8. Codebase Linting (Resolved 12 ESLint errors including unused variables, implicit any types, and React Refresh component exports)
+
+### Notes
+
+- Resolved an issue where RSS feeds and HTML fetch operations were being rate-limited (429 errors), although User-Agent overrides were later reverted to prioritize standard fetching unless strictly necessary.
+- Improved TypeScript strictness by exporting and using proper schema types (`User`, `Source`, `Episode`) instead of `any` across the tRPC routers and tests.
