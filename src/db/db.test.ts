@@ -9,6 +9,9 @@ describe('Database Integration', () => {
       id: 'test-user-id',
       email: 'test@example.com',
       name: 'Test User',
+      emailVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     // Cleanup first

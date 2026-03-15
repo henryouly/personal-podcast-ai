@@ -1,22 +1,34 @@
 import { useState } from "react";
 import { authClient } from "../../lib/auth-client";
-import { Mail, Lock, Loader2 } from "lucide-react";
+import { Mail, Lock, Loader2, AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setErrorMessage("");
+        
         try {
-            await authClient.signIn.email({
+            const { data, error } = await authClient.signIn.email({
                 email,
                 password,
             });
+            
+            if (error) {
+                setErrorMessage(error.message || "Failed to sign in");
+            } else if (data) {
+                navigate("/dashboard");
+            }
         } catch (error) {
             console.error("Login failed", error);
+            setErrorMessage("An unexpected error occurred");
         } finally {
             setLoading(false);
         }
@@ -25,7 +37,14 @@ export function LoginForm() {
     return (
         <div className="w-full max-w-md p-8 bg-zinc-900 rounded-2xl border border-zinc-800 shadow-xl">
             <h2 className="text-2xl font-bold text-zinc-50 mb-6 text-center">Welcome Back</h2>
+            {errorMessage && (
+                <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3 text-red-500 text-sm">
+                    <AlertCircle className="w-5 h-5" />
+                    {errorMessage}
+                </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
+
                 <div>
                     <label className="block text-sm font-medium text-zinc-400 mb-1.5">Email</label>
                     <div className="relative">

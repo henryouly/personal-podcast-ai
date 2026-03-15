@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { Radio, LayoutDashboard, Rss, Settings as SettingsIcon, LogOut } from 'lucide-react';
 import { LoginForm } from "./components/auth/LoginForm";
 import { SignupForm } from "./components/auth/SignupForm";
@@ -9,12 +9,18 @@ import { authClient } from "./lib/auth-client";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
+  const navigate = useNavigate();
   
   const navItems = [
     { label: 'Feed', icon: LayoutDashboard, path: '/dashboard' },
     { label: 'Sources', icon: Rss, path: '/dashboard/sources' },
     { label: 'Settings', icon: SettingsIcon, path: '/dashboard/settings' },
   ];
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950 flex">
@@ -43,7 +49,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         <button 
-          onClick={() => authClient.signOut()}
+          onClick={handleSignOut}
           className="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:text-red-400 hover:bg-red-400/5 rounded-xl transition-all font-medium mt-auto"
         >
           <LogOut className="w-5 h-5" />

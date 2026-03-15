@@ -24,6 +24,9 @@ describe('User Router', () => {
       id: testUserId,
       email: 'user-router@example.com',
       name: 'User Router Test',
+      emailVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     // Setup user

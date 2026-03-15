@@ -10,6 +10,9 @@ describe('Sources & Episodes Routers', () => {
     id: testUserId,
     email: 'content@example.com',
     name: 'Content Test User',
+    emailVerified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   beforeEach(async () => {

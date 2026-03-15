@@ -44,7 +44,11 @@ describe('Hono + tRPC Integration', () => {
     const testUser = {
       id: 'rss-user-id',
       email: 'rss@example.com',
-      rssToken: testToken
+      name: 'RSS User',
+      rssToken: testToken,
+      emailVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     // Setup
