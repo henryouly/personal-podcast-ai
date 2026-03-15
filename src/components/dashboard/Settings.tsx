@@ -14,7 +14,7 @@ export function Settings() {
     }
   });
 
-  const rssUrl = `${window.location.origin}/api/rss/YOUR_TOKEN`; // Token needs to be fetched from user profile
+  const rssUrl = status?.rssToken ? `${window.location.origin}/api/rss/${status.rssToken}` : `${window.location.origin}/api/rss/loading...`;
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

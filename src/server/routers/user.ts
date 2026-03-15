@@ -34,6 +34,7 @@ export const userRouter = router({
         geminiKey: true,
         openaiKey: true,
         elevenLabsKey: true,
+        rssToken: true,
       },
     });
 
@@ -41,6 +42,7 @@ export const userRouter = router({
       gemini: !!user?.geminiKey,
       openai: !!user?.openaiKey,
       elevenLabs: !!user?.elevenLabsKey,
+      rssToken: user?.rssToken,
     };
   }),
 });
