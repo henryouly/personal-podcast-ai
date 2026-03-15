@@ -5,10 +5,7 @@ export const aiService = {
   /**
    * Transform news articles into a podcast script using gemini-3.1-flash-lite-preview
    */
-  async generatePodcastScript(
-    apiKey: string,
-    articles: NormalizedArticle[]
-  ): Promise<string> {
+  async generatePodcastScript(apiKey: string, articles: NormalizedArticle[]): Promise<string> {
     if (!apiKey) throw new Error("Gemini API Key is missing");
 
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -36,13 +33,15 @@ export const aiService = {
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
-      
+
       if (!text) throw new Error("Gemini returned an empty response");
-      
+
       return text;
     } catch (error) {
       console.error("Gemini Script Generation Error:", error);
-      throw new Error(`AI Generation Error: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(
+        `AI Generation Error: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     }
   },
 };

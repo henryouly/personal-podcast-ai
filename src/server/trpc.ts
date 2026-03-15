@@ -11,15 +11,15 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const isAuthed = t.middleware(({ next, ctx }) => {
-    if (!ctx.user) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-    return next({
-        ctx: {
-            user: ctx.user,
-            session: ctx.session,
-        },
-    });
+  if (!ctx.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      user: ctx.user,
+      session: ctx.session,
+    },
+  });
 });
 
 export const protectedProcedure = t.procedure.use(isAuthed);

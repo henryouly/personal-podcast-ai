@@ -1,15 +1,15 @@
-import { describe, it, expect } from 'vitest';
-import { db } from './index';
-import { users } from './schema';
-import { eq } from 'drizzle-orm';
+import { describe, it, expect } from "vitest";
+import { db } from "./index";
+import { users } from "./schema";
+import { eq } from "drizzle-orm";
 
-describe('Database Integration', () => {
-  it('should be able to insert and query a user', async () => {
+describe("Database Integration", () => {
+  it("should be able to insert and query a user", async () => {
     const testUserId = `test-user-${Date.now()}`;
     const testUser = {
       id: testUserId,
       email: `${testUserId}@example.com`,
-      name: 'Test User',
+      name: "Test User",
       emailVerified: true,
       createdAt: new Date(),
       updatedAt: new Date(),

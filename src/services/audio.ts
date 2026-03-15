@@ -48,7 +48,9 @@ export const audioService = {
       };
     } catch (error) {
       console.error("Audio Synthesis/Upload Error:", error);
-      throw new Error(`Audio Service Error: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(
+        `Audio Service Error: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     }
   },
 };

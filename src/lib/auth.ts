@@ -4,17 +4,17 @@ import { db } from "../db";
 import * as schema from "../db/schema";
 
 export const auth = betterAuth({
-    baseURL: process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "http://localhost:5173",
-    database: drizzleAdapter(db, {
-        provider: "sqlite",
-        schema: {
-            user: schema.users,
-            session: schema.sessions,
-            account: schema.accounts,
-            verification: schema.verifications,
-        },
-    }),
-    emailAndPassword: {
-        enabled: true,
+  baseURL: process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "http://localhost:5173",
+  database: drizzleAdapter(db, {
+    provider: "sqlite",
+    schema: {
+      user: schema.users,
+      session: schema.sessions,
+      account: schema.accounts,
+      verification: schema.verifications,
     },
+  }),
+  emailAndPassword: {
+    enabled: true,
+  },
 });

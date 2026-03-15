@@ -26,14 +26,18 @@ export const sessions = sqliteTable("sessions", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  userId: text("user_id").notNull().references(() => users.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
 });
 
 export const accounts = sqliteTable("accounts", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
-  userId: text("user_id").notNull().references(() => users.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   idToken: text("id_token"),
@@ -61,7 +65,7 @@ export const sources = sqliteTable("sources", {
   userId: text("user_id").references(() => users.id),
   name: text("name").notNull(),
   url: text("url").notNull(),
-  type: text("type").notNull(),      // 'rss' | 'html'
+  type: text("type").notNull(), // 'rss' | 'html'
   frequency: text("frequency").default("daily"),
   lastCheckedAt: integer("last_checked_at", { mode: "timestamp" }),
 });

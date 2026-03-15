@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { trpc } from '../../lib/trpc';
-import { Plus, Trash2, Globe, Rss, Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { trpc } from "../../lib/trpc";
+import { Plus, Trash2, Globe, Rss, Loader2 } from "lucide-react";
 
 export function SourceManager() {
-  const [name, setName] = useState('');
-  const [url, setUrl] = useState('');
-  const [type, setType] = useState<'rss' | 'html'>('rss');
+  const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const [type, setType] = useState<"rss" | "html">("rss");
 
   const utils = trpc.useUtils();
   const { data: sources, isLoading } = trpc.sources.list.useQuery();
-  
+
   const addSource = trpc.sources.add.useMutation({
     onSuccess: () => {
-      setName('');
-      setUrl('');
+      setName("");
+      setUrl("");
       utils.sources.list.invalidate();
     },
   });
@@ -60,7 +60,7 @@ export function SourceManager() {
           <div className="flex gap-2">
             <select
               value={type}
-              onChange={(e) => setType(e.target.value as 'rss' | 'html')}
+              onChange={(e) => setType(e.target.value as "rss" | "html")}
               className="flex-1 px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-200 focus:outline-none"
             >
               <option value="rss">RSS</option>
@@ -71,7 +71,7 @@ export function SourceManager() {
               disabled={addSource.isPending}
               className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors disabled:opacity-50"
             >
-              {addSource.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Add'}
+              {addSource.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Add"}
             </button>
           </div>
         </form>
@@ -84,14 +84,19 @@ export function SourceManager() {
           </div>
         ) : sources?.length === 0 ? (
           <div className="col-span-full text-center py-12 bg-zinc-900/50 border border-dashed border-zinc-800 rounded-2xl">
-            <p className="text-zinc-500">No sources added yet. Start by adding an RSS feed above.</p>
+            <p className="text-zinc-500">
+              No sources added yet. Start by adding an RSS feed above.
+            </p>
           </div>
         ) : (
           sources?.map((source) => (
-            <div key={source.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between group">
+            <div
+              key={source.id}
+              className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between group"
+            >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-zinc-950 rounded-lg flex items-center justify-center border border-zinc-800">
-                  {source.type === 'rss' ? (
+                  {source.type === "rss" ? (
                     <Rss className="w-5 h-5 text-orange-500" />
                   ) : (
                     <Globe className="w-5 h-5 text-blue-500" />

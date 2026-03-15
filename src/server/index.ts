@@ -12,28 +12,25 @@ app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 // RSS Feed path
 app.get("/api/rss/:token", async (c) => {
-    const token = c.req.param("token");
-    try {
-        const xml = await rssService.generateFeed(token);
-        return c.text(xml, 200, {
-            "Content-Type": "application/xml",
-        });
-    } catch (error) {
-        return c.text("Unauthorized or Invalid Token", 401);
-    }
+  const token = c.req.param("token");
+  try {
+    const xml = await rssService.generateFeed(token);
+    return c.text(xml, 200, {
+      "Content-Type": "application/xml",
+    });
+  } catch (error) {
+    return c.text("Unauthorized or Invalid Token", 401);
+  }
 });
 
 // tRPC API path
-app.use(
-    "/api/trpc/*",
-    async (c) => {
-        return fetchRequestHandler({
-            endpoint: "/api/trpc",
-            req: c.req.raw,
-            router: appRouter,
-            createContext: () => createContext(c),
-        });
-    }
-);
+app.use("/api/trpc/*", async (c) => {
+  return fetchRequestHandler({
+    endpoint: "/api/trpc",
+    req: c.req.raw,
+    router: appRouter,
+    createContext: () => createContext(c),
+  });
+});
 
 export default app;

@@ -1,15 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { appRouter } from './_app';
-import { db } from '../../db';
-import { users, sources, episodes } from '../../db/schema';
-import { eq } from 'drizzle-orm';
+import { describe, it, expect, beforeEach } from "vitest";
+import { appRouter } from "./_app";
+import { db } from "../../db";
+import { users, sources, episodes } from "../../db/schema";
+import { eq } from "drizzle-orm";
 
-describe('Sources & Episodes Routers', () => {
+describe("Sources & Episodes Routers", () => {
   const testUserId = `test-user-${Date.now()}`;
   const testUser = {
     id: testUserId,
     email: `${testUserId}@example.com`,
-    name: 'Content Test User',
+    name: "Content Test User",
     emailVerified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -21,7 +21,7 @@ describe('Sources & Episodes Routers', () => {
     await db.insert(users).values(testUser);
   });
 
-  it('should manage sources CRUD', async () => {
+  it("should manage sources CRUD", async () => {
     const caller = appRouter.createCaller({
       db,
       user: testUser as any,
@@ -30,12 +30,12 @@ describe('Sources & Episodes Routers', () => {
 
     // Add
     const source = await caller.sources.add({
-      name: 'Test RSS',
-      url: 'https://example.com/rss',
-      type: 'rss',
+      name: "Test RSS",
+      url: "https://example.com/rss",
+      type: "rss",
     });
 
-    expect(source.name).toBe('Test RSS');
+    expect(source.name).toBe("Test RSS");
 
     // List
     const list = await caller.sources.list();
@@ -48,7 +48,7 @@ describe('Sources & Episodes Routers', () => {
     expect(listAfterDelete.length).toBe(0);
   });
 
-  it('should list and retry episodes', async () => {
+  it("should list and retry episodes", async () => {
     const caller = appRouter.createCaller({
       db,
       user: testUser as any,
@@ -57,24 +57,27 @@ describe('Sources & Episodes Routers', () => {
 
     // Need a source first for foreign key
     const source = await caller.sources.add({
-      name: 'Episode Source',
-      url: 'https://example.com/rss',
-      type: 'rss',
+      name: "Episode Source",
+      url: "https://example.com/rss",
+      type: "rss",
     });
 
     // Insert a failed episode manually
-    const [episode] = await db.insert(episodes).values({
-      sourceId: source.id,
-      title: 'Failed Episode',
-      status: 'failed',
-      lastError: 'Something went wrong',
-      createdAt: new Date(),
-    }).returning();
+    const [episode] = await db
+      .insert(episodes)
+      .values({
+        sourceId: source.id,
+        title: "Failed Episode",
+        status: "failed",
+        lastError: "Something went wrong",
+        createdAt: new Date(),
+      })
+      .returning();
 
     // List
     const list = await caller.episodes.list();
     expect(list.length).toBe(1);
-    expect(list[0].title).toBe('Failed Episode');
+    expect(list[0].title).toBe("Failed Episode");
 
     // Retry
     const retry = await caller.episodes.retry({ id: episode.id });
@@ -82,6 +85,6 @@ describe('Sources & Episodes Routers', () => {
 
     // Verify status updated
     const listAfterRetry = await caller.episodes.list();
-    expect(listAfterRetry[0].status).toBe('pending');
+    expect(listAfterRetry[0].status).toBe("pending");
   });
 });
