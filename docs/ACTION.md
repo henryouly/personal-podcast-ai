@@ -166,19 +166,19 @@
 
 ## [2026-03-14] Starting Phase 3.3
 
-**Goal**: Integrate Google Cloud TTS and Vercel Blob storage for audio synthesis and management.
+**Goal**: Integrate Microsoft Edge TTS and Vercel Blob storage for audio synthesis and management.
 
 ### Status Update
 
-- [x] 1. Install Google Cloud TTS & Vercel Blob SDKs
+- [x] 1. Install Microsoft Edge TTS & Vercel Blob SDKs
 - [x] 2. Implement Audio Service (src/services/audio.ts)
 - [x] 3. Verification (Unit Tests verified synthesis and upload)
 
 ### Notes
 
-- Implemented high-quality `en-US-Neural2-D` voice as default.
+- Implemented high-quality `en-US-AvaNeural` voice as default from Edge TTS.
 - Integrated Vercel Blob for persistent storage of `.mp3` assets.
-- Confirmed BYOK support by passing the API key to the `TextToSpeechClient` constructor.
+- Edge TTS used for natural sounding narration without requiring a dedicated API key.
 
 ---
 

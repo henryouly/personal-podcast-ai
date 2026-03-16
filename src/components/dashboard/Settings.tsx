@@ -4,7 +4,6 @@ import { Save, Key, Copy, Check, Loader2, Info } from "lucide-react";
 
 export function Settings() {
   const [geminiKey, setGeminiKey] = useState("");
-  const [googleKey, setGoogleKey] = useState("");
   const [copied, setCopied] = useState(false);
 
   const { data: status, isLoading } = trpc.user.getKeyStatus.useQuery();
@@ -22,7 +21,6 @@ export function Settings() {
     e.preventDefault();
     updateKeys.mutate({
       geminiKey: geminiKey || undefined,
-      elevenLabsKey: googleKey || undefined, // Map to elevenLabsKey in DB for now
     });
   };
 
@@ -39,8 +37,7 @@ export function Settings() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
         <h2 className="text-2xl font-bold text-zinc-50 mb-2">API Configuration</h2>
         <p className="text-zinc-500 mb-8">
-          Bring Your Own Key (BYOK). We don't charge for processing; you pay your providers
-          directly.
+          Bring Your Own Key (BYOK). Only Gemini is required for processing.
         </p>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -60,27 +57,6 @@ export function Settings() {
                 placeholder="Paste your Gemini key..."
                 value={geminiKey}
                 onChange={(e) => setGeminiKey(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 focus:ring-2 focus:ring-indigo-500/50 outline-none"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-300 flex items-center gap-2">
-              Google Cloud (TTS) API Key
-              {status?.elevenLabs && (
-                <span className="text-[10px] bg-green-500/20 text-green-500 px-1.5 py-0.5 rounded">
-                  Configured
-                </span>
-              )}
-            </label>
-            <div className="relative">
-              <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
-              <input
-                type="password"
-                placeholder="Paste your Google Cloud key..."
-                value={googleKey}
-                onChange={(e) => setGoogleKey(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 focus:ring-2 focus:ring-indigo-500/50 outline-none"
               />
             </div>

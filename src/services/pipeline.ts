@@ -25,11 +25,6 @@ export const pipelineService = {
 
     if (!user) throw new Error("User not found");
     if (!user.geminiKey) throw new Error("Gemini API Key is missing. Please update your settings.");
-    if (!user.elevenLabsKey)
-      throw new Error("Google Cloud (stored as elevenlabs_key temporarily) API Key is missing.");
-
-    // Note: Core reference used elevenlabs_key, but we transitioned to Google Cloud TTS.
-    // I will use elevenLabsKey as the storage for the Google Cloud API Key for now to stay compatible with schema.
 
     // 2. Create a pending episode record
     const [episode] = await db
@@ -65,12 +60,7 @@ export const pipelineService = {
       await db.update(episodes).set({ script }).where(eq(episodes.id, episodeId));
 
       // 3. Audio Synthesis
-      // Using user.elevenLabsKey as the placeholder for Google Cloud API Key per user's earlier schema
-      const { audioUrl, storageKey } = await audioService.synthesizeAndUpload(
-        user.elevenLabsKey as string,
-        script,
-        episodeId
-      );
+      const { audioUrl, storageKey } = await audioService.synthesizeAndUpload(script, episodeId);
 
       // 4. Finalize
       await db

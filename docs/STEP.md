@@ -303,7 +303,7 @@ Create `src/server/index.ts` to host the tRPC middleware using Hono and configur
 
 Create `src/server/routers/user.ts` with procedures:
 
-- `updateKeys`: Update Gemini/OpenAI/ElevenLabs keys.
+- `updateKeys`: Update Gemini/OpenAI keys.
 - `getKeyStatus`: Check which keys are configured.
 
 ### 2. Integration
@@ -372,19 +372,19 @@ Create `src/services/ai.ts` to provide an interface for generating scripts.
 
 Create prompts that instruct Gemini to transform news articles into a natural, engaging podcast script for a personal narrator.
 
-## Phase 3.3: TTS & Asset Management (Google Cloud TTS)
+## Phase 3.3: TTS & Asset Management (Microsoft Edge TTS)
 
-### 1. Install Google Cloud TTS & Blob SDKs
+### 1. Install Microsoft Edge TTS & Blob SDKs
 
 ```bash
-pnpm add @google-cloud/text-to-speech @vercel/blob
+pnpm add edge-tts-universal @vercel/blob
 ```
 
 ### 2. Implement Audio Synthesis
 
 Create `src/services/audio.ts` to:
 
-- Call Google Cloud TTS API using the user's provided credentials.
+- Call Microsoft Edge TTS API (via edge-tts-universal).
 - Upload the resulting audio buffer to Vercel Blob storage.
 - Update the `episodes` table with the `audioUrl` and `status='done'`.
 
@@ -469,7 +469,7 @@ Create `src/components/dashboard/EpisodeFeed.tsx`:
 
 Create `src/components/dashboard/Settings.tsx`:
 
-- Form to update Gemini and Google Cloud API keys.
+- Form to update Gemini API keys.
 - Display and "Copy" button for the personal RSS feed URL.
 
 ## Dependencies Breakdown

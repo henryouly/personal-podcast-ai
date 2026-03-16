@@ -22,7 +22,7 @@ This document outlines the step-by-step roadmap for building the PAP platform, a
 ### AI & Processing
 
 - **LLMs**: gemini-3.1-flash-lite-preview (User-provided keys)
-- **TTS**: Google Cloud Text-to-Speech (User-provided keys)
+- **TTS**: Microsoft Edge TTS (Built-in, high quality)
 - **Scraping**: RSS Parser + Cheerio
 
 ---
@@ -54,7 +54,7 @@ This document outlines the step-by-step roadmap for building the PAP platform, a
   - Create a wrapper for Gemini that uses the `user_id`'s stored keys.
   - Implement prompt templates for podcast-style narration.
 - **3.3. Audio Synthesis**:
-  - Integrate Google Cloud Text-to-Speech.
+  - Integrate Microsoft Edge TTS (edge-tts-universal).
   - Implement Vercel Blob upload logic and store URLs in the `episodes` table.
 
 ### Phase 4: RSS & Resilience
