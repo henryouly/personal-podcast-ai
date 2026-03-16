@@ -10,9 +10,13 @@ export const audioService = {
   /**
    * Synthesize a podcast script into audio using Microsoft Edge TTS and upload to Vercel Blob
    */
-  async synthesizeAndUpload(script: string, episodeId: number): Promise<AudioSynthesisResult> {
-    // en-US-AvaNeural is a very high quality, natural voice from Edge TTS
-    const tts = new EdgeTTS(script, "en-US-AvaNeural");
+  async synthesizeAndUpload(
+    script: string,
+    episodeId: number,
+    language: string = "English"
+  ): Promise<AudioSynthesisResult> {
+    const voice = language === "Mandarin Chinese" ? "zh-CN-XiaoyiNeural" : "en-US-AvaNeural";
+    const tts = new EdgeTTS(script, voice);
 
     try {
       // 1. Generate Speech

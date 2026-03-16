@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "podcast_language" text DEFAULT 'English' NOT NULL;

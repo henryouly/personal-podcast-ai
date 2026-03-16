@@ -11,6 +11,7 @@ export const userRouter = router({
         geminiKey: z.string().optional(),
         openaiKey: z.string().optional(),
         elevenLabsKey: z.string().optional(),
+        podcastLanguage: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -20,6 +21,7 @@ export const userRouter = router({
           geminiKey: input.geminiKey,
           openaiKey: input.openaiKey,
           elevenLabsKey: input.elevenLabsKey,
+          podcastLanguage: input.podcastLanguage,
         })
         .where(eq(users.id, ctx.user.id));
 
@@ -35,6 +37,7 @@ export const userRouter = router({
         openaiKey: true,
         elevenLabsKey: true,
         rssToken: true,
+        podcastLanguage: true,
       },
     });
 
@@ -43,6 +46,7 @@ export const userRouter = router({
       openai: !!user?.openaiKey,
       elevenLabs: !!user?.elevenLabsKey,
       rssToken: user?.rssToken,
+      podcastLanguage: user?.podcastLanguage,
     };
   }),
 });

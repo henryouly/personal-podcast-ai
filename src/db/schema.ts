@@ -16,6 +16,7 @@ export const users = pgTable("users", {
   openaiKey: text("openai_key"),
   elevenLabsKey: text("elevenlabs_key"),
   rssToken: text("rss_token").unique(),
+  podcastLanguage: text("podcast_language").default("English"),
 });
 
 export const sessions = pgTable("sessions", {

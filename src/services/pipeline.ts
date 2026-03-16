@@ -54,13 +54,18 @@ export const pipelineService = {
       // 2. AI Script
       const script = await aiService.generatePodcastScript(
         user.geminiKey as string,
-        articles.slice(0, 5)
+        articles.slice(0, 5),
+        user.podcastLanguage || "English"
       );
 
       await db.update(episodes).set({ script }).where(eq(episodes.id, episodeId));
 
       // 3. Audio Synthesis
-      const { audioUrl, storageKey } = await audioService.synthesizeAndUpload(script, episodeId);
+      const { audioUrl, storageKey } = await audioService.synthesizeAndUpload(
+        script,
+        episodeId,
+        user.podcastLanguage || "English"
+      );
 
       // 4. Finalize
       await db

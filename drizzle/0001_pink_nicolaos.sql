@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "podcast_language" DROP NOT NULL;

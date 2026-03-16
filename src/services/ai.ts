@@ -5,7 +5,11 @@ export const aiService = {
   /**
    * Transform news articles into a podcast script using gemini-3.1-flash-lite-preview
    */
-  async generatePodcastScript(apiKey: string, articles: NormalizedArticle[]): Promise<string> {
+  async generatePodcastScript(
+    apiKey: string,
+    articles: NormalizedArticle[],
+    language: string = "English"
+  ): Promise<string> {
     if (!apiKey) throw new Error("Gemini API Key is missing");
 
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -16,12 +20,13 @@ export const aiService = {
       Your task is to transform the following news articles into a single, cohesive, and engaging podcast script.
       
       CONSTRAINTS:
+      - The podcast script must be in language ${language}.
       - Use a conversational, friendly, and informative tone.
-      - Start with a brief "Welcome back to your personalized news update."
+      - Start with a brief "Welcome back to your personalized news update." in ${language}.
       - Smoothly transition between articles.
       - Do not include technical metadata (like [Music starts] or [Host name]).
       - Focus on the key insights and why they matter.
-      - End with a summary and a "Stay tuned for your next update."
+      - End with a summary and a closing message in ${language}. 
       
       ARTICLES:
       ${articles.map((a, i) => `ARTICLE ${i + 1}:\nTitle: ${a.title}\nContent: ${a.content}`).join("\n\n")}

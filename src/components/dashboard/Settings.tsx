@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "../../lib/trpc";
 import { Save, Key, Copy, Check, Loader2, Info } from "lucide-react";
 
 export function Settings() {
   const [geminiKey, setGeminiKey] = useState("");
+  const [podcastLanguage, setPodcastLanguage] = useState("English");
   const [copied, setCopied] = useState(false);
 
   const { data: status, isLoading } = trpc.user.getKeyStatus.useQuery();
+
+  // Sync state with fetched data
+  useEffect(() => {
+    if (status?.podcastLanguage) {
+      /* eslint-disable-next-line react-hooks/set-state-in-effect */
+      setPodcastLanguage(status.podcastLanguage);
+    }
+  }, [status?.podcastLanguage]);
+
   const updateKeys = trpc.user.updateKeys.useMutation({
     onSuccess: () => {
-      alert("Keys updated successfully");
+      alert("Settings updated successfully");
     },
   });
 
@@ -21,6 +31,7 @@ export function Settings() {
     e.preventDefault();
     updateKeys.mutate({
       geminiKey: geminiKey || undefined,
+      podcastLanguage,
     });
   };
 
@@ -60,6 +71,23 @@ export function Settings() {
                 className="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 focus:ring-2 focus:ring-indigo-500/50 outline-none"
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-300 flex items-center gap-2">
+              Podcast Language
+            </label>
+            <select
+              value={podcastLanguage}
+              onChange={(e) => setPodcastLanguage(e.target.value)}
+              className="w-full px-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-zinc-200 focus:ring-2 focus:ring-indigo-500/50 outline-none"
+            >
+              <option value="English">English</option>
+              <option value="Mandarin Chinese">Mandarin Chinese</option>
+            </select>
+            <p className="text-xs text-zinc-500">
+              This will affect both script generation and the AI voice used.
+            </p>
           </div>
 
           <button
