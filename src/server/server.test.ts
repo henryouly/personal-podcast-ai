@@ -2,6 +2,20 @@ import { describe, it, expect } from "vitest";
 import app from "./index";
 
 describe("Hono + tRPC Integration", () => {
+  it("should return 200 OK from the Hono hello endpoint", async () => {
+    const res = await app.request("/api/hello");
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data).toEqual({ message: "hello world" });
+  });
+
+  it("should return 200 OK from the tRPC hello check", async () => {
+    const res = await app.request("/api/trpc/hello");
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.result.data).toEqual({ message: "hello world" });
+  });
+
   it("should return 200 OK from the tRPC health check", async () => {
     // Simulate a GET request to the health check endpoint
     // tRPC URL format is usually /api/trpc/[procedureName]?batch=1&input={}

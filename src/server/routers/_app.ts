@@ -7,6 +7,9 @@ export const appRouter = router({
   health: publicProcedure.query(() => {
     return { status: "ok" };
   }),
+  hello: publicProcedure.query(() => {
+    return { message: "hello world" };
+  }),
   user: userRouter,
   sources: sourcesRouter,
   episodes: episodesRouter,
