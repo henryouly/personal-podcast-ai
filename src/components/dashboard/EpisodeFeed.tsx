@@ -1,3 +1,5 @@
+"use client";
+
 import { trpc } from "../../lib/trpc";
 import { RefreshCw, AlertCircle, Clock, CheckCircle2, Loader2, Zap } from "lucide-react";
 

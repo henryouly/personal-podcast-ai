@@ -1,10 +1,9 @@
 import { db } from "../db";
 import { auth } from "../lib/auth";
-import type { Context } from "hono";
 
-export const createContext = async (c: Context) => {
+export const createContext = async (req: Request) => {
   const session = await auth.api.getSession({
-    headers: c.req.raw.headers,
+    headers: req.headers,
   });
 
   return {

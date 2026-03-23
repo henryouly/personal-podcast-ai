@@ -1,10 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { LoginForm } from "./LoginForm";
-import { BrowserRouter } from "react-router-dom";
+
+vi.mock("next/navigation", () => ({
+  useRouter() {
+    return {
+      push: vi.fn(),
+    };
+  },
+}));
 
 const renderWithRouter = (ui: React.ReactElement) => {
-  return render(ui, { wrapper: BrowserRouter });
+  return render(ui);
 };
 
 describe("LoginForm", () => {

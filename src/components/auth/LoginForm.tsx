@@ -1,10 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import { authClient } from "../../lib/auth-client";
 import { Mail, Lock, Loader2, AlertCircle } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ export function LoginForm() {
       if (error) {
         setErrorMessage(error.message || "Failed to sign in");
       } else if (data) {
-        navigate("/dashboard");
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error("Login failed", error);

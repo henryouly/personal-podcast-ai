@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { trpc } from "../../lib/trpc";
 import { Save, Key, Copy, Check, Loader2, Info } from "lucide-react";
@@ -23,9 +25,10 @@ export function Settings() {
     },
   });
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const rssUrl = status?.rssToken
-    ? `${window.location.origin}/api/rss/${status.rssToken}`
-    : `${window.location.origin}/api/rss/loading...`;
+    ? `${origin}/api/rss/${status.rssToken}`
+    : `${origin}/api/rss/loading...`;
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
