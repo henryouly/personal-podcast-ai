@@ -8,9 +8,6 @@ import { rssService } from "../src/services/rss.js";
 
 const app = new Hono();
 
-// Test hello endpoint
-app.get("/api/hello", (c) => c.json({ message: "hello world" }));
-
 // Auth base path
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
