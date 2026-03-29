@@ -1,15 +1,16 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { appRouter } from "./_app";
-import { db } from "../../db";
-import { users, episodes, sources, type User, type Session } from "../../db/schema";
+import { appRouter } from "./_app.js";
+import { db } from "../../src/db/index.js";
+import { users, episodes, sources, type User, type Session } from "../../src/db/schema.js";
 import { eq, inArray } from "drizzle-orm";
 
-describe("Sources & Episodes Routers", () => {
-  const testUserId = `test-user-${Date.now()}`;
+describe("Sources & Episodes Routers (API)", () => {
+  const testUserId = `test-user-api-${Date.now()}`;
   const testUser = {
     id: testUserId,
     email: `${testUserId}@example.com`,
-    name: "Content Test User",
+    name: "Content Test User API",
+    geminiKey: "dummy-key",
     emailVerified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -36,12 +37,12 @@ describe("Sources & Episodes Routers", () => {
 
     // Add
     const source = await caller.sources.add({
-      name: "Test RSS",
+      name: "Test RSS API",
       url: "https://example.com/rss",
       type: "rss",
     });
 
-    expect(source.name).toBe("Test RSS");
+    expect(source.name).toBe("Test RSS API");
 
     // List
     const list = await caller.sources.list();
@@ -63,7 +64,7 @@ describe("Sources & Episodes Routers", () => {
 
     // Need a source first for foreign key
     const source = await caller.sources.add({
-      name: "Episode Source",
+      name: "Episode Source API",
       url: "https://example.com/rss",
       type: "rss",
     });
@@ -73,7 +74,7 @@ describe("Sources & Episodes Routers", () => {
       .insert(episodes)
       .values({
         sourceId: source.id,
-        title: "Failed Episode",
+        title: "Failed Episode API",
         status: "failed",
         lastError: "Something went wrong",
         createdAt: new Date(),
@@ -83,7 +84,7 @@ describe("Sources & Episodes Routers", () => {
     // List
     const list = await caller.episodes.list();
     expect(list.length).toBe(1);
-    expect(list[0].title).toBe("Failed Episode");
+    expect(list[0].title).toBe("Failed Episode API");
 
     // Retry
     const retry = await caller.episodes.retry({ id: episode.id });
@@ -92,5 +93,29 @@ describe("Sources & Episodes Routers", () => {
     // Verify status updated
     const listAfterRetry = await caller.episodes.list();
     expect(listAfterRetry[0].status).toBe("pending");
+  });
+
+  it("should trigger pipeline for a source", async () => {
+    const caller = appRouter.createCaller({
+      db,
+      user: testUser as unknown as User,
+      session: {} as unknown as Session,
+    });
+
+    const source = await caller.sources.add({
+      name: "Trigger Source API",
+      url: "https://example.com/rss",
+      type: "rss",
+    });
+
+    // We don't want to actually run the whole AI pipeline in tests, 
+    // but we can verify the trigger creates the episode record.
+    const result = await caller.episodes.trigger({ sourceId: source.id });
+    expect(result.id).toBeDefined();
+    expect(result.status).toBe("pending");
+    expect(result.sourceId).toBe(source.id);
+
+    const list = await caller.episodes.list();
+    expect(list.some(e => e.id === result.id)).toBe(true);
   });
 });
