@@ -4,6 +4,7 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./routers/_app.js";
 import { createContext } from "./context.js";
 import { auth } from "../src/lib/auth.js";
+import { rssService } from "../src/services/rss.js";
 
 const app = new Hono();
 
@@ -12,6 +13,20 @@ app.get("/api/hello", (c) => c.json({ message: "hello world" }));
 
 // Auth base path
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
+
+// RSS Feed path
+app.get("/api/rss/:token", async (c) => {
+  const token = c.req.param("token");
+  try {
+    const xml = await rssService.generateFeed(token);
+    return c.text(xml, 200, {
+      "Content-Type": "application/xml",
+    });
+  } catch (error) {
+    console.error("RSS Feed Generation Error:", error);
+    return c.text("Unauthorized or Invalid Token", 401);
+  }
+});
 
 // tRPC API path
 app.use("/api/trpc/*", async (c) => {

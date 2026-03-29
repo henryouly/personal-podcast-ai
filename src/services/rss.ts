@@ -1,6 +1,6 @@
 import { create } from "xmlbuilder2";
-import { db } from "../db";
-import { episodes, sources, users } from "../db/schema";
+import { db } from "../db/index.js";
+import { episodes, sources, users } from "../db/schema.js";
 import { eq, and, desc } from "drizzle-orm";
 
 export const rssService = {
