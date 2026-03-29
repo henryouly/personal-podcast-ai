@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import type { NormalizedArticle } from "./ingestion";
+import type { NormalizedArticle } from "./ingestion.js";
 
 export const aiService = {
   /**

@@ -1,9 +1,9 @@
-import { db } from "../db";
-import { episodes, sources, users, type User, type Source } from "../db/schema";
+import { db } from "../db/index.js";
+import { episodes, sources, users, type User, type Source } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import { ingestionService } from "./ingestion";
-import { aiService } from "./ai";
-import { audioService } from "./audio";
+import { ingestionService } from "./ingestion.js";
+import { aiService } from "./ai.js";
+import { audioService } from "./audio.js";
 
 export const pipelineService = {
   /**
