@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     devServer({
-      entry: "src/server/index.ts",
+      entry: "api/index.ts",
       exclude: [
         /^\/(?!api\/).*/,
         /^(?!\/api\/).*/,
