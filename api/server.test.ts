@@ -5,7 +5,7 @@ describe("Hono + tRPC Integration (API)", () => {
   it("should return 401 for unauthorized tRPC requests", async () => {
     // Testing a real procedure to ensure tRPC is mounted correctly at /api/trpc
     const res = await app.request("/api/trpc/user.getKeyStatus");
-    expect(res.status).toBe(401); 
+    expect(res.status).toBe(401);
     const data = await res.json();
     // In tRPC 11, the error might be directly under data.error or data[0].error if batched
     expect(JSON.stringify(data)).toContain("UNAUTHORIZED");

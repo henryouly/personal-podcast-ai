@@ -18,9 +18,12 @@ describe("Sources & Episodes Routers (API)", () => {
 
   beforeEach(async () => {
     // Basic cleanup in reverse order of foreign keys
-    const userSources = await db.select({ id: sources.id }).from(sources).where(eq(sources.userId, testUserId));
+    const userSources = await db
+      .select({ id: sources.id })
+      .from(sources)
+      .where(eq(sources.userId, testUserId));
     if (userSources.length > 0) {
-      const sourceIds = userSources.map(s => s.id);
+      const sourceIds = userSources.map((s) => s.id);
       await db.delete(episodes).where(inArray(episodes.sourceId, sourceIds));
       await db.delete(sources).where(eq(sources.userId, testUserId));
     }
@@ -108,7 +111,7 @@ describe("Sources & Episodes Routers (API)", () => {
       type: "rss",
     });
 
-    // We don't want to actually run the whole AI pipeline in tests, 
+    // We don't want to actually run the whole AI pipeline in tests,
     // but we can verify the trigger creates the episode record.
     const result = await caller.episodes.trigger({ sourceId: source.id });
     expect(result.id).toBeDefined();
@@ -116,6 +119,6 @@ describe("Sources & Episodes Routers (API)", () => {
     expect(result.sourceId).toBe(source.id);
 
     const list = await caller.episodes.list();
-    expect(list.some(e => e.id === result.id)).toBe(true);
+    expect(list.some((e) => e.id === result.id)).toBe(true);
   });
 });

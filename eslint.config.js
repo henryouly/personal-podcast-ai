@@ -7,7 +7,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 export default defineConfig([
-  globalIgnores(["dist"]),
+  globalIgnores(["dist", ".vercel", "node_modules", "tsconfig.api.tsbuildinfo"]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
